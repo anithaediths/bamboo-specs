@@ -7,11 +7,14 @@ import com.atlassian.bamboo.specs.api.builders.plan.Job;
 import com.atlassian.bamboo.specs.api.builders.plan.Plan;
 import com.atlassian.bamboo.specs.api.builders.plan.Stage;
 import com.atlassian.bamboo.specs.api.builders.requirement.Requirement;
+import com.atlassian.bamboo.specs.builders.repository.git.UserPasswordAuthentication;
+import com.atlassian.bamboo.specs.builders.repository.github.GitHubRepository;
 import com.atlassian.bamboo.specs.builders.task.CheckoutItem;
 import com.atlassian.bamboo.specs.builders.task.ScriptTask;
 import com.atlassian.bamboo.specs.builders.task.VcsCheckoutTask;
 import com.atlassian.bamboo.specs.model.task.ScriptTaskProperties;
 import com.atlassian.bamboo.specs.util.BambooServer;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Plan configuration for Bamboo.
@@ -26,24 +29,36 @@ public class Plan1 extends AbstractPlanSpec {
     }
 
     Plan createPlan() {
-        return new Plan(
-                project(),
-                "Plan Name1", "PLANKEY1")
-                .description("Plan created from (enter repository url of your plan)")
-                .stages(new Stage("Default stage")
-                                .jobs(new Job("Default Job", new BambooKey("JOB1"))
-                                        .tasks(new VcsCheckoutTask()
-                                                .description("Checkout Default Repository")
-                                                .checkoutItems(new CheckoutItem().defaultRepository()),
-                                                new ScriptTask()
-                                                        .description("build")
-                                                        .location(ScriptTaskProperties.Location.FILE)
-                                                        .fileFromPath("build.sh"))
-                                        .requirements(new Requirement("system.os")
-                                                .matchValue("linux")
-                                                .matchType(Requirement.MatchType.EQUALS))));
+        Plan plan = new Plan(project(), "Plan Name1", "PLANKEY1");
+        plan.description("Plan created from (enter repository url of your plan)");
 
+        GitHubRepository gitHubRepository = new GitHubRepository();
+        gitHubRepository.name("terraform-react");
+        gitHubRepository.authentication(new UserPasswordAuthentication("anithaediths")
+                .password("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"));
+        gitHubRepository.branch("main");
+
+        plan.planRepositories(gitHubRepository);
+        plan.stages(createStage().jobs(createJob()));
+        return plan;
     }
 
+    @NotNull
+    private Stage createStage() {
+        return new Stage("Default stage");
+    }
 
+    private Job createJob() {
+        return new Job("Default Job", new BambooKey("JOB1"))
+                .tasks(new VcsCheckoutTask()
+                                .description("Checkout Default Repository")
+                                .checkoutItems(new CheckoutItem().defaultRepository()),
+                        new ScriptTask()
+                                .description("build")
+                                .location(ScriptTaskProperties.Location.FILE)
+                                .fileFromPath("build.sh"))
+                .requirements(new Requirement("system.os")
+                        .matchValue("linux")
+                        .matchType(Requirement.MatchType.EQUALS));
+    }
 }

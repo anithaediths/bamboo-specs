@@ -90,7 +90,7 @@ public class Plan1 extends AbstractPlanSpec {
                                         .description("Checkout GitHub Repo")
                                         .checkoutItems(new CheckoutItem()
                                                 .repository(new VcsRepositoryIdentifier()
-                                                        .name("sherlock")))
+                                                        .name("react-chart-app")))
                                         .cleanCheckout(true),
                                 new MavenTask()
                                         .description("Maven with Cobertura CC report")

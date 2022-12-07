@@ -20,7 +20,7 @@ public class Plan2 extends AbstractPlanSpec {
     Plan createPlan() {
         return new Plan(
                 project(),
-                "Plan Name", "PLANKEY2")
+                "Plan Name2", "PLANKEY2")
                 .description("Plan created from (enter repository url of your plan)");
     }
 

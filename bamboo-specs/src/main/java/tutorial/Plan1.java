@@ -36,9 +36,8 @@ public class Plan1 extends AbstractPlanSpec {
         GitHubRepository gitHubRepository = new GitHubRepository()
                 .name("terraform-react")
                 .authentication(new UserPasswordAuthentication("anithaediths")
-                        .password("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"))
+                        .password("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"))
                 .branch("main");
-
         plan.planRepositories(gitHubRepository);
         plan.stages(createStage().jobs(createJob()));
         return plan;

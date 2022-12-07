@@ -10,12 +10,6 @@ import com.atlassian.bamboo.specs.util.BambooServer;
 
 public abstract class AbstractPlanSpec {
 
-    Project project() {
-        return new Project()
-                .name("Project Name")
-                .key("PRJ");
-    }
-
     static PlanPermissions createPlanPermission(PlanIdentifier planIdentifier) {
         Permissions permission = new Permissions()
                 .userPermissions("admin", PermissionType.ADMIN, PermissionType.CLONE, PermissionType.EDIT)
@@ -30,6 +24,12 @@ public abstract class AbstractPlanSpec {
         bambooServer.publish(plan);
         PlanPermissions planPermission = createPlanPermission(plan.getIdentifier());
         bambooServer.publish(planPermission);
+    }
+
+    Project project() {
+        return new Project()
+                .name("Project Name")
+                .key("PRJ");
     }
 
 }

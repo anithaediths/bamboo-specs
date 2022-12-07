@@ -12,7 +12,7 @@ import com.atlassian.bamboo.specs.util.BambooServer;
 @BambooSpec
 public class Plan2 extends AbstractPlanSpec {
 
-    public static void main(final String[] args)  {
+    public static void main(final String[] args) {
         Plan plan = new Plan2().createPlan();
         publishPlan(plan);
     }

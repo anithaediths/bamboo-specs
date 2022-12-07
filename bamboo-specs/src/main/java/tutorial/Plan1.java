@@ -42,97 +42,13 @@ public class Plan1 extends AbstractPlanSpec {
     }
 
     public Plan createPlan() {
-        final Plan plan = new Plan(new Project()
-                /*.oid(new BambooOid("cxx7l5poipz5"))*/
-                .key(new BambooKey("MYD"))
-                .name("MyDev")
-                .description("Dev project for testing CICD"),
-                "MyPlan1",
-                new BambooKey("MYZ"))
-                /*.oid(new BambooOid("cxnidkcgoxkx"))*/
-                .description("Plan for implementing CICD 1")
+        return new Plan(project(), "Plan Name React Chart App", "PLANKEY1")
+                .description("Plan for implementing CI CD 1")
                 .pluginConfigurations(new ConcurrentBuilds()
                         .useSystemWideDefault(false))
-                .stages(new Stage("Continuous Integration")
-                        .jobs(new Job("CI Job",
-                                new BambooKey("JOB1"))
-                                .artifacts(new Artifact()
-                                                .name("MyWARFile")
-                                                .copyPattern("*.war")
-                                                .location("target")
-                                                .shared(true),
-                                        new Artifact()
-                                                .name("Cobertura Report")
-                                                .copyPattern("*")
-                                                .location("target/site/cobertura"))
-                                .tasks(new CleanWorkingDirectoryTask()
-                                                .description("Clean working directory"),
-                                        new VcsCheckoutTask()
-                                                .description("Checkout GitHub Repo")
-                                                .checkoutItems(new CheckoutItem()
-                                                        .repository(new VcsRepositoryIdentifier()
-                                                                .name("sherlock")))
-                                                .cleanCheckout(true),
-                                        new MavenTask()
-                                                .description("Maven with Cobertura CC report")
-                                                .goal("cobertura:cobertura -Dcobertura.report.format=xml")
-                                                .jdk("JDK 1.8")
-                                                .executableLabel("Maven 3"),
-                                        new AnyTask(new AtlassianModule("ch.mibex.bamboo.sonar4bamboo:sonar4bamboo.maven3task"))
-                                                .description("Sonar Report Publisher")
-                                                .enabled(false)
-                                                .configuration(new MapBuilder()
-                                                        .put("incrementalFileForInclusionList", "")
-                                                        .put("chosenSonarConfigId", "1")
-                                                        .put("useGradleWrapper", "")
-                                                        .put("useNewGradleSonarQubePlugin", "")
-                                                        .put("sonarJavaSource", "")
-                                                        .put("sonarProjectName", "")
-                                                        .put("buildJdk", "JDK 1.8")
-                                                        .put("gradleWrapperLocation", "")
-                                                        .put("sonarLanguage", "")
-                                                        .put("sonarSources", "")
-                                                        .put("useGlobalSonarServerConfig", "true")
-                                                        .put("incrementalMode", "")
-                                                        .put("failBuildForBrokenQualityGates", "")
-                                                        .put("sonarTests", "")
-                                                        .put("incrementalNoPullRequest", "incrementalModeFailBuildField")
-                                                        .put("failBuildForSonarErrors", "")
-                                                        .put("sonarProjectVersion", "")
-                                                        .put("sonarBranch", "")
-                                                        .put("executable", "Maven 3")
-                                                        .put("illegalBranchCharsReplacement", "_")
-                                                        .put("failBuildForTaskErrors", "true")
-                                                        .put("incrementalModeNotPossible", "incrementalModeRunFullAnalysis")
-                                                        .put("sonarJavaTarget", "")
-                                                        .put("environmentVariables", "")
-                                                        .put("incrementalModeGitBranchPattern", "")
-                                                        .put("legacyBranching", "true")
-                                                        .put("replaceSpecialBranchChars", "")
-                                                        .put("additionalProperties", "")
-                                                        .put("autoBranch", "true")
-                                                        .put("sonarProjectKey", "")
-                                                        .put("incrementalModeBambooUser", "")
-                                                        .put("overrideSonarBuildConfig", "")
-                                                        .put("workingSubDirectory", "")
-                                                        .build()),
-                                        new MavenTask()
-                                                .description("Build task")
-                                                .enabled(false)
-                                                .goal("clean compile package")
-                                                .jdk("JDK 1.8")
-                                                .executableLabel("Maven 3"))))
+                .stages(createStage())
                 .linkedRepositories("react-chart-app")
-                .planRepositories(new GitHubRepository()
-                        .name("sherlock")
-                        /* .oid(new BambooOid("cxro1e2p6vwh"))*/
-                        .repositoryViewer(new GitHubRepositoryViewer())
-                        .repository("Gpkmr/sherlock")
-                        .branch("master")
-                        .authentication(new UserPasswordAuthentication("gpkmr")
-                                .password("Gopi@16!"))
-                        .changeDetection(new VcsChangeDetection()))
-
+                .planRepositories(getGitHubRepository())
                 .triggers(new RepositoryPollingTrigger()
                                 .enabled(false)
                                 .withPollingPeriod(Duration.ofSeconds(30)),
@@ -142,12 +58,51 @@ public class Plan1 extends AbstractPlanSpec {
                 .planBranchManagement(new PlanBranchManagement()
                         .delete(new BranchCleanup())
                         .notificationForCommitters());
-        return plan;
+    }
+
+    private GitHubRepository getGitHubRepository() {
+        return new GitHubRepository()
+                .name("react-chart-app")
+                .repositoryViewer(new GitHubRepositoryViewer())
+                .repository("anithaediths/react-chart-app")
+                .branch("main")
+                .authentication(new UserPasswordAuthentication("anithaediths")
+                        .password("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"))
+                .changeDetection(new VcsChangeDetection());
     }
 
     @NotNull
     private Stage createStage() {
-        return new Stage("Default stage");
+        return new Stage("Continuous Integration")
+                .jobs(new Job("CI Job", new BambooKey("JOB1"))
+                        .artifacts(new Artifact()
+                                        .name("MyWARFile")
+                                        .copyPattern("*.war")
+                                        .location("target")
+                                        .shared(true),
+                                new Artifact()
+                                        .name("Cobertura Report")
+                                        .copyPattern("*")
+                                        .location("target/site/cobertura"))
+                        .tasks(new CleanWorkingDirectoryTask()
+                                        .description("Clean working directory"),
+                                new VcsCheckoutTask()
+                                        .description("Checkout GitHub Repo")
+                                        .checkoutItems(new CheckoutItem()
+                                                .repository(new VcsRepositoryIdentifier()
+                                                        .name("sherlock")))
+                                        .cleanCheckout(true),
+                                new MavenTask()
+                                        .description("Maven with Cobertura CC report")
+                                        .goal("cobertura:cobertura -Dcobertura.report.format=xml")
+                                        .jdk("JDK 1.8")
+                                        .executableLabel("Maven 3"),
+                                new MavenTask()
+                                        .description("Build task")
+                                        .enabled(false)
+                                        .goal("clean compile package")
+                                        .jdk("JDK 1.8")
+                                        .executableLabel("Maven 3")));
     }
 
     private Job createJob() {

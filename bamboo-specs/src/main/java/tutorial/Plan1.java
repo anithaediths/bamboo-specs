@@ -6,6 +6,7 @@ import com.atlassian.bamboo.specs.api.builders.permission.PlanPermissions;
 import com.atlassian.bamboo.specs.api.builders.plan.Job;
 import com.atlassian.bamboo.specs.api.builders.plan.Plan;
 import com.atlassian.bamboo.specs.api.builders.plan.Stage;
+import com.atlassian.bamboo.specs.api.builders.repository.VcsRepositoryIdentifier;
 import com.atlassian.bamboo.specs.api.builders.requirement.Requirement;
 import com.atlassian.bamboo.specs.builders.repository.git.UserPasswordAuthentication;
 import com.atlassian.bamboo.specs.builders.repository.github.GitHubRepository;
@@ -35,7 +36,7 @@ public class Plan1 extends AbstractPlanSpec {
         GitHubRepository gitHubRepository = new GitHubRepository()
                 .name("terraform-react")
                 .authentication(new UserPasswordAuthentication("anithaediths")
-                .password("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"))
+                        .password("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"))
                 .branch("main");
 
         plan.planRepositories(gitHubRepository);
@@ -52,7 +53,10 @@ public class Plan1 extends AbstractPlanSpec {
         return new Job("Default Job", new BambooKey("JOB1"))
                 .tasks(new VcsCheckoutTask()
                                 .description("Checkout Default Repository")
-                                .checkoutItems(new CheckoutItem().defaultRepository()),
+                                .checkoutItems(new CheckoutItem()
+                                        .repository(new VcsRepositoryIdentifier()
+                                                .name("terraform-react")))
+                                .cleanCheckout(true),
                         new ScriptTask()
                                 .description("build")
                                 .location(ScriptTaskProperties.Location.FILE)

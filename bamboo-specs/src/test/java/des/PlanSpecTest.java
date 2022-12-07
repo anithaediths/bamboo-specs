@@ -1,4 +1,4 @@
-package tutorial;
+package des;
 
 import com.atlassian.bamboo.specs.api.builders.plan.Plan;
 import com.atlassian.bamboo.specs.api.exceptions.PropertiesValidationException;

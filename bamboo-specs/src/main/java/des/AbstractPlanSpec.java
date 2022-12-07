@@ -1,4 +1,4 @@
-package tutorial;
+package des;
 
 import com.atlassian.bamboo.specs.api.builders.permission.PermissionType;
 import com.atlassian.bamboo.specs.api.builders.permission.Permissions;

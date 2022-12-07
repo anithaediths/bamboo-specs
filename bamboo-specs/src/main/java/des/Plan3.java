@@ -1,11 +1,10 @@
-package tutorial;
+package des;
 
 import com.atlassian.bamboo.specs.api.BambooSpec;
 import com.atlassian.bamboo.specs.api.builders.plan.Plan;
 
 /**
  * Plan configuration for Bamboo.
- * Learn more on: <a href="https://confluence.atlassian.com/display/BAMBOO/Bamboo+Specs">https://confluence.atlassian.com/display/BAMBOO/Bamboo+Specs</a>
  */
 @BambooSpec
 public class Plan3 extends AbstractPlanSpec {

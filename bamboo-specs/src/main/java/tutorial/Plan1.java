@@ -122,7 +122,7 @@ public class Plan1 extends AbstractPlanSpec {
                                                 .goal("clean compile package")
                                                 .jdk("JDK 1.8")
                                                 .executableLabel("Maven 3"))))
-                .linkedRepositories("first-project")
+                .linkedRepositories("react-chart-app")
                 .planRepositories(new GitHubRepository()
                         .name("sherlock")
                         /* .oid(new BambooOid("cxro1e2p6vwh"))*/

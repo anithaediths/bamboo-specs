@@ -62,7 +62,7 @@ public class Plan1 extends AbstractPlanSpec {
 
     private GitHubRepository getGitHubRepository() {
         return new GitHubRepository()
-                .name("react-chart-app")
+                .name("react-chart-app-second")
                 .repositoryViewer(new GitHubRepositoryViewer())
                 .repository("anithaediths/react-chart-app")
                 .branch("main")

@@ -8,7 +8,7 @@ import org.junit.Test;
 public class PlanSpecTest {
     @Test
     public void checkYourPlanOffline() throws PropertiesValidationException {
-        Plan plan = new PlanSpec().createPlan();
+        Plan plan = new Plan2().createPlan();
 
         EntityPropertiesBuilders.build(plan);
     }

@@ -32,11 +32,11 @@ public class Plan1 extends AbstractPlanSpec {
         Plan plan = new Plan(project(), "Plan Name1", "PLANKEY1");
         plan.description("Plan created from (enter repository url of your plan)");
 
-        GitHubRepository gitHubRepository = new GitHubRepository();
-        gitHubRepository.name("terraform-react");
-        gitHubRepository.authentication(new UserPasswordAuthentication("anithaediths")
-                .password("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"));
-        gitHubRepository.branch("main");
+        GitHubRepository gitHubRepository = new GitHubRepository()
+                .name("terraform-react")
+                .authentication(new UserPasswordAuthentication("anithaediths")
+                .password("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"))
+                .branch("main");
 
         plan.planRepositories(gitHubRepository);
         plan.stages(createStage().jobs(createJob()));
